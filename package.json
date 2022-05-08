@@ -7,7 +7,7 @@
     "frontend": "cd ./frontend && npm run dev",
     "backend": "cd ./backend && npm run dev",
     "e2e": "cd ./e2e && npm run test",
-    "install-deps": "npm install && cd ./frontend && npm install && cd .. && cd ./backend && npm install"
+    "install-deps": "cd ./frontend && npm install && cd .. && cd ./backend && npm install"
   },
   "repository": {
     "type": "git",

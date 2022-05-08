@@ -1,4 +1,3 @@
-const { nextTick } = require('process');
 const database = require('../database');
 
 const getAllStudies = async (req, res, next) => {
@@ -87,7 +86,6 @@ const updateStudy = async (req, res, next) => {
     next(error)
   }
 }
-
 
 module.exports = {
   getAllStudies,

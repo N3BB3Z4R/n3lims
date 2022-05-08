@@ -1,5 +1,6 @@
 const { Router } = require('express');
-const db = require('../database');
+// const pool = require('../database');
+
 const {
   getAllStudies,
   getStudy,
