@@ -1,0 +1,25 @@
+{
+  "name": "n3lims-frontend",
+  "version": "0.0.1",
+  "description": "Laboratory Information Management System for sample unit and associated data management",
+  "main": "index.js",
+  "scripts": {
+    "frontend": "cd ./frontend && npm run dev",
+    "backend": "cd ./backend && npm run dev",
+    "e2e": "cd ./e2e && npm run test",
+    "install-deps": "npm install && cd ./frontend && npm install && cd .. && cd ./backend && npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "test-repo"
+  },
+  "keywords": [
+    "lims",
+    "sample",
+    "unit",
+    "laboratory",
+    "management"
+  ],
+  "author": "Óscar Abad Rodríguez (Nebe/N3BB3Z4R)",
+  "license": "ISC"
+}
