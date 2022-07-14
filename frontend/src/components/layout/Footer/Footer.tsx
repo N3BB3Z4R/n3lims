@@ -15,9 +15,12 @@ export default Footer
 
 const FooterStyled = Styled.div`
   width: 100%;
-  max-width: 85%;
-  margin: 0 auto;
+  margin: 1rem auto;
   display: flex;
-  justify-content: center;
-  flex-direction: row;
+  justify-content: start;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 2;
+  background: #333;
+  color: white;
 `

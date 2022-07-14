@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Routes, Route, Link } from 'react-router-dom'
+import './App.css';
 import Home from './pages/Home/Home'
 import Trials from './pages/Trials/Trials'
+import GlobalStyle from './theme/globalstyle';
 // import Ad from './pages/Ad/Ad'
 // import CreateNewAd from './pages/CreateNewAd/CreateNewAd'
 // import Login from './pages/UserFlow/Login/Login'
@@ -36,8 +38,10 @@ function App() {
         <ProtectedRoute exact path="/my-bills" component={MyBills} />
         <ProtectedRoute path="/my-bills/:id" component={Bill} /> */}
       </Routes>
+      <GlobalStyle />
     </div>
   )
 }
 
 export default App
+

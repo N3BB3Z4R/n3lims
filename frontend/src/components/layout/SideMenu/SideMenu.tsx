@@ -48,19 +48,14 @@ const SideMenu = () => {
   return (
     <SideMenuStyled>
       <div className="side-menu">
-        <div className="side-menu-header">
-          <div className="side-menu-header-title">
-            <h1>ReactJS</h1>
-          </div>
-          <button onClick={handleHide}>Toggle</button>
-        </div>
-        <div className="side-menu-body">
+        <div className="side-menu__body">
           <ul>
             {data.map((item, index) => {
               return (
                 <li key={index}>
-                  <Link to={item.link} onClick={() => handleClick(item.link)}>
+                  <Link className="button-side" to={item.link} onClick={() => handleClick(item.link)}>
                     {item.text}
+                    <span className="badge">{item.text.slice(0, 1)}</span>
                   </Link>
                 </li>
               );
@@ -79,17 +74,58 @@ interface SideMenuProps {
 
 // width: ${ (props) => props.active ? '10rem' : '3.5rem' };
 const SideMenuStyled = Styled.div`
-  width: 10rem;
-  background: #ffa;
-  overflow: hidden;
-
-  .opened {
-    width: 10rem;
-    background: red;
-  }
+  width: 1rem;
+  background: #666;
+  position: relative;
 
   ul {
     list-style: none;
     padding: 0rem;
+    min-width: 5rem;
+    position: absolute;
+    left: 0;
+  }
+
+  .side-menu__body {
+    display: flex;
+    flex-direction: column;
+    padding: 0rem;
+  }
+
+  .button-side {
+    display: block;
+    padding: 0.8rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    min-width: 7rem;
+    background: hsl(100, 80%, 40%);
+    border-radius:0 0.5rem 0.5rem 0;
+    transition: all 0.3s ease-in-out;
+    margin: 0.5rem 0;
+    transform: translateX(-75%);
+    position: relative;
+    cursor: pointer;
+
+    .badge {
+      opacity: 1;
+      transition: all 0.3s ease-in-out;
+      position: absolute;
+      right: 0.9rem;
+      padding-left: 0.5rem;
+      font-weight: bold;
+    }
+    
+    &:hover {
+      background: hsl(120, 76%, 20%);
+      transform: translateX(-0.5rem);
+      box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.5);
+      width: 4rem;
+
+      .badge {
+        opacity: 0;
+        transition: all 0.3s ease-in-out;
+      }
+    }
   }
 `

@@ -6,8 +6,10 @@ function Header() {
   return (
     <HeaderStyled>
       {/* <img src={logo} alt="Logo" /> */}
-      <h1>N3LIMS - Neat, Nimble & Nifty</h1>
-      <button>Login</button>
+      <div className="header__wrapper">
+        <h1>N3LIMS - Neat, Nimble & Nifty</h1>
+        <button className="button-2">Login</button>
+      </div>
     </HeaderStyled>
   );
 }
@@ -15,8 +17,14 @@ export default Header
 
 const HeaderStyled = Styled.div`
   width: 100%;
-  max-width: 85%;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
+  max-width: 100%;
+  background-color: #333;
+  color: white;
+
+  .header__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
 `
