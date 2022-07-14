@@ -2,21 +2,24 @@ import { Body, Wrapper, Header, SideMenu, Container, Footer } from '../../compon
 import Styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import API from '../../api/ApiServices';
 
+type TrialsProps = {
+  id: number;
+  title: string;
+  description: string;
+  createdAt: string;
+}
 function Home() {
 
-  const [trials, setTrials] = useState<
-    Array<{
-      id: number;
-      title: string;
-      description: string;
-      createdAt: string;
-    }>
-  >([]);
+  const [cardStyle, setCardStyle] = useState(true)
+  const [trials, setTrials] = useState<Array<TrialsProps>>([]);
   useEffect(() => {
-    fetch('http://localhost:3001/trials')
-      .then(response => response.json())
-      .then(data => setTrials(data))
+    const getTrialsAsync = async () => {
+      const trials = await API.getTrials();
+      setTrials(trials);
+    }
+    getTrialsAsync();
   }, [])
 
   return (
@@ -36,21 +39,34 @@ function Home() {
                 <Link className="top-menu__button" to="/trials">Filter</Link>
               </li>
               <li>
-                <Link className="top-menu__button" to="/about">About</Link>
+                <button onClick={() => setCardStyle(!cardStyle)} className="top-menu__button">Card/List</button>
               </li>
             </ul>
           </TopMenu>
-          <TrialsList>
-            {trials &&
-              trials.map((trial: any) => (
-                <TrialCard className="card" key={trial.id}>
-                  <p className='trial__title'>{trial.title}</p>
-                  <p className='trial__description'>{trial.description}</p>
-                  <button className='trial__button'>Editar</button>
-                </TrialCard>
-              ))
-            }
-          </TrialsList>
+          {cardStyle ? (
+            <TrialsList>
+              {trials &&
+                trials.map((trial: any) => (
+                  <TrialCard className="card" key={trial.id}>
+                    <p className='trial__title'>{trial.title}</p>
+                    <p className='trial__description'>{trial.description}</p>
+                    <button className='trial__button'>Editar</button>
+                  </TrialCard>
+                ))}
+            </TrialsList>)
+            : (
+              <TrialsList style={{ flexDirection: 'column' }}>
+                {trials &&
+                  trials.map((trial: any) => (
+                    <TrialLister className="list" key={trial.id}>
+                      <p className='trial__title'>{trial.title}</p>
+                      <p className='trial__description'>{trial.description}</p>
+                      <button className='trial__button'>Editar</button>
+                    </TrialLister>
+                  ))}
+              </TrialsList>
+            )
+          }
         </Container>
       </Wrapper>
       <Footer />
@@ -97,9 +113,21 @@ const TrialsList = Styled.div`
   padding: 1rem;
   width: 100%;
   display: flex;
+  flex-direction: row;
   gap: 1rem;
   border-radius: 1rem;
   background-color: #aaa;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+  }
+  .list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 `
 const TrialCard = Styled.div`
   width: 100%;
@@ -137,5 +165,16 @@ const TrialCard = Styled.div`
       background-color: hsl(120, 50%, 45%);
       border-radius: inherit;
       transition: all 0.2s ease-in-out;
+    }
   }
+`
+
+const TrialLister = Styled.div`
+  width: 100%;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  text-align: left;
+  border-radius: 5px;
 `
