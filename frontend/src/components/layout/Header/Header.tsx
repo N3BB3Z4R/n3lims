@@ -5,7 +5,7 @@ const logo = 'https://randomuser.me/api/portraits/men/21.jpg'
 function Header() {
   return (
     <HeaderStyled>
-      <img src={logo} alt="Logo" />
+      {/* <img src={logo} alt="Logo" /> */}
       <h1>N3LIMS - Neat, Nimble & Nifty</h1>
       <button>Login</button>
     </HeaderStyled>

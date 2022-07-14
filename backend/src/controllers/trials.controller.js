@@ -1,26 +1,26 @@
 const database = require('../database');
 
-const getAllStudies = async (req, res, next) => {
-  console.log('Get All Studies')
+const getAllTrials = async (req, res, next) => {
+  console.log('Get All Trials')
   try {
-    const allStudies = await database.query('SELECT * FROM STUDIES');
-    res.send(allStudies.rows);
+    const allTrials = await database.query('SELECT * FROM TRIALS');
+    res.send(allTrials.rows);
   } catch (error) {
     next(error)
   }
 }
-const getStudy = async (req, res, next) => {
-  console.log('Get Study with ID:', req.params.id)
+const getTrial = async (req, res, next) => {
+  console.log('Get Trial with ID:', req.params.id)
   try {
     const { id } = req.params;
     const result = await database.query(`
-      SELECT * FROM STUDIES
+      SELECT * FROM TRIALS
       WHERE id = ${id}
     `);
     if (result.rows.length === 0) {
-      console.log('Study not found')
+      console.log('Trial not found')
       return res.status(404).json({
-        message: 'Study not found'
+        message: 'Trial not found'
       })
     }
     res.json(result.rows[0]);
@@ -30,11 +30,11 @@ const getStudy = async (req, res, next) => {
     // res.json({ error: error.message })
   }
 }
-const createStudy = async (req, res, next) => {
+const createTrial = async (req, res, next) => {
   try {
     const { title, description, started } = req.body
     const result = await database.query(`
-      INSERT INTO STUDIES (title, description, started)
+      INSERT INTO TRIALS (title, description, started)
       VALUES ($1, $2, $3)
       RETURNING *
     `, [title, description, started])
@@ -44,53 +44,53 @@ const createStudy = async (req, res, next) => {
     next(error)
   }
 }
-const deleteStudy = async (req, res, next) => {
+const deleteTrial = async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await database.query(`
-      DELETE FROM STUDIES
+      DELETE FROM TRIALS
       WHERE id = ${id}
       RETURNING *
     `)
     if (result.rowCount === 0) {
-      console.log('Study not found')
+      console.log('Trial not found')
       return res.status(404).json({
-        message: 'Study not found'
+        message: 'Trial not found'
       })
     }
-    res.json({ message: 'Study deleted' })
+    res.json({ message: 'Trial deleted' })
     // return res.sendStatus(204)
   } catch (error) {
     next(error)
   }
 }
-const updateStudy = async (req, res, next) => {
+const updateTrial = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { title, description, started, ended } = req.body;
     const result = await database.query(`
-      UPDATE STUDIES
+      UPDATE TRIALS
       SET title = $1, description = $2, started = $3, ended = $4
       WHERE id = ${id}
       RETURNING *
     `, [title, description, started, ended])
     if (result.rowCount === 0) {
-      console.log('Study not found')
+      console.log('Trial not found')
       return res.status(404).json({
-        message: 'Study not found'
+        message: 'Trial not found'
       })
     }
     res.json(result.rows[0])
-    res.json({ message: 'Study updated' })
+    res.json({ message: 'Trial updated' })
   } catch (error) {
     next(error)
   }
 }
 
 module.exports = {
-  getAllStudies,
-  getStudy,
-  createStudy,
-  deleteStudy,
-  updateStudy
+  getAllTrials,
+  getTrial,
+  createTrial,
+  deleteTrial,
+  updateTrial
 }

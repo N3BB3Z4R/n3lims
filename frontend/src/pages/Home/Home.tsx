@@ -1,14 +1,23 @@
-import Body from '../../components/layout/Body/Body';
-import Footer from '../../components/layout/Footer/Footer';
-import Header from '../../components/layout/Header/Header';
+import { Body, Wrapper, Header, SideMenu, Container, Footer } from '../../components/layout/index';
+import Styled from 'styled-components';
 
 function Home() {
   return (
-    <div>
+    <Body>
       <Header />
-      <Body />
+      <Wrapper>
+        <SideMenu />
+        <Container />
+      </Wrapper>
       <Footer />
-    </div>
+    </Body>
   );
 }
 export default Home
+
+// export const Wrapper = Styled.div`
+//   width: 100%;
+//   height: 100%;
+//   display: flex;
+//   flex-direction: row;
+// `
