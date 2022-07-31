@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { Routes, Route, Link } from 'react-router-dom'
 import './App.css';
-import Home from './pages/Home/Home'
-import Trials from './pages/Trials/Trials'
 import GlobalStyle from './theme/globalstyle';
+import Home from './pages/Home/Home'
+import Projects from './pages/Projects/Projects'
+import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
+import SampleUnit from './pages/SampleUnit/SampleUnit';
 // import Ad from './pages/Ad/Ad'
 // import CreateNewAd from './pages/CreateNewAd/CreateNewAd'
 // import Login from './pages/UserFlow/Login/Login'
@@ -24,7 +27,10 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/trials" element={<Trials />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/sample-unit" element={<SampleUnit />} />
         {/* <Route exact path="/ad/:id" component={Ad} />
         <Route exact path="/new-ad" component={CreateNewAd} />
         <Route exact path="/login" component={Login} />

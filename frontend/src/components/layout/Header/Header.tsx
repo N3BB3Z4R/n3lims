@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Styled from 'styled-components';
 
 const logo = 'https://randomuser.me/api/portraits/men/21.jpg'
@@ -8,7 +9,7 @@ function Header() {
       {/* <img src={logo} alt="Logo" /> */}
       <div className="header__wrapper">
         <h1>N3LIMS - Neat, Nimble & Nifty</h1>
-        <button className="button-2">Login</button>
+        <Link to="/login" className="button-2">Login / Register</Link>
       </div>
     </HeaderStyled>
   );
