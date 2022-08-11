@@ -27,7 +27,7 @@ export default function HomePage() {
       <main>
         <Header />
         <div>
-          <ButtonLink className='mt-2' href='/sample-unit' variant='light'>
+          <ButtonLink className='mt-2' href='/SampleUnit' variant='light'>
             SampleUnit
           </ButtonLink>
         </div>
