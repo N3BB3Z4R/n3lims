@@ -2,7 +2,8 @@ import { Body, Wrapper, Header, SideMenu, Container, Footer } from '../../compon
 import Styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import API from '../../api/ApiServices';
-import ListManager from '../../components/molecules/ListManager';
+import ListSamples from '../../components/molecules/ListSamples';
+
 
 type ProjectsProps = {
   workflowId: number;
@@ -13,31 +14,32 @@ type ProjectsProps = {
   endedAt: string;
   projectType: string;
 }
-function Home() {
-  const [projects, setProjects] = useState<Array<ProjectsProps>>([]);
+
+function SampleUnit() {
+
+  const [samples, setSamples] = useState<any>([]);
 
   useEffect(() => {
-    const getProjectsAsync = async () => {
-      const projects = await API.getProjects();
-      setProjects(projects);
+    const getAllSamples = async () => {
+      const samples = await API.getSamples();
+      setSamples(samples);
     }
-    getProjectsAsync();
+    console.log('samples', samples);
+    getAllSamples();
   }, [])
-
-
 
   return (
     <Body>
       <Header />
       <Wrapper>
         <SideMenu />
-        <ListManager
+        <ListSamples
           parent='sample-unit'
-          projects={projects}
+          samples={samples}
         />
       </Wrapper>
       <Footer />
     </Body>
   );
 }
-export default Home
+export default SampleUnit

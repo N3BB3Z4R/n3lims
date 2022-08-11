@@ -16,4 +16,6 @@ const getSamples = async () => {
   const data = await res.json()
   return data
 }
+
+// TODO REFACTOR THIS TO USE A SINGLE API CALL AND SOME PROVIDERS TO CALL THE APISERVICE
 export default { getTrials, getProjects, getSamples }

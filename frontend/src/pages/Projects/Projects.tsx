@@ -16,7 +16,7 @@ type ProjectsProps = {
   createdAt: string;
   endedAt: string;
 }
-function Home() {
+function Projects() {
 
   const [cardStyle, setCardStyle] = useState(true);
   const [searchFilter, setSearchFilter] = useState('');
@@ -104,7 +104,7 @@ function Home() {
     </Body>
   );
 }
-export default Home
+export default Projects
 
 const TopMenu = Styled.div`
   display: flex;
