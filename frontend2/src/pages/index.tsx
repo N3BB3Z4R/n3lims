@@ -37,10 +37,10 @@ export default function HomePage() {
               © {new Date().getFullYear()} By{' '}
               <UnderlineLink href='https://theodorusclarence.com?ref=tsnextstarter'>
                 N3LIMS v2
-                <ButtonLink className='mt-2' href='/components' variant='light'>
-                  Comps
-                </ButtonLink>
               </UnderlineLink>
+              <ButtonLink className='mt-2' href='/components' variant='light'>
+                Comps
+              </ButtonLink>
             </footer>
           </div>
         </section>
