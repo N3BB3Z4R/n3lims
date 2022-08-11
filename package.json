@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "frontend": "cd ./frontend && npm run dev",
+    "frontend2": "cd ./frontend2 && yarn dev",
     "backend": "cd ./backend && npm run dev",
     "e2e": "cd ./e2e && npm run test",
-    "install-deps": "cd ./frontend && npm install && cd .. && cd ./backend && npm install"
+    "install-deps": "cd ./frontend && npm install && cd .. && cd ./backend && npm install",
+    "install-deps2": "cd ./frontend2 && yarn install && cd .. && cd ./backend && npm install"
   },
   "repository": {
     "type": "git",

@@ -6,4 +6,16 @@ const getTrials = async () => {
   const data = await res.json()
   return data
 }
-export default { getTrials }
+const getProjects = async () => {
+  const res = await fetch(`${apiUrl}/projects`)
+  const data = await res.json()
+  return data
+}
+const getSamples = async () => {
+  const res = await fetch(`${apiUrl}/samples`)
+  const data = await res.json()
+  return data
+}
+
+// TODO REFACTOR THIS TO USE A SINGLE API CALL AND SOME PROVIDERS TO CALL THE APISERVICE
+export default { getTrials, getProjects, getSamples }
