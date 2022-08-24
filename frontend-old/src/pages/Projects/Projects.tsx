@@ -1,42 +1,37 @@
-import { useEffect, useState } from 'react';
-import { Body, Wrapper, Header, SideMenu, Container, Footer } from '../layout/index';
+import { Body, Wrapper, Header, SideMenu, Container, Footer } from '../../components/layout/index';
 import Styled from 'styled-components';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import API from '../../api/ApiServices';
 import { HiViewGrid, HiViewList } from 'react-icons/hi';
 import { MdCreateNewFolder } from 'react-icons/md';
 import { AiFillFilter } from 'react-icons/ai';
-import Dropdown from '../atoms/Dropdown';
+import Dropdown from '../../components/atoms/Dropdown';
 
 type ProjectsProps = {
-  workflowId: number;
+  id: number;
   title: string;
   description: string;
   ownedId: number;
   createdAt: string;
   endedAt: string;
-  projectType: string;
 }
+function Projects() {
 
-type ListManagerProps = {
-  parent: string;
-  projects: Array<ProjectsProps>;
-}
-
-const ListManager = ({
-  parent,
-  projects,
-}: ListManagerProps) => {
   const [cardStyle, setCardStyle] = useState(true);
   const [searchFilter, setSearchFilter] = useState('');
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [filteredProjects, setFilteredProjects] = useState<Array<ProjectsProps>>([]);
-
+  const [projects, setProjects] = useState<Array<ProjectsProps>>([]);
   useEffect(() => {
     const getProjectsAsync = async () => {
+      const projects = await API.getProjects();
+      setProjects(projects);
       setFilteredProjects(projects);
     }
     getProjectsAsync();
   }, [])
+
   useEffect(() => {
     if (searchFilter === '') {
       setFilteredProjects(projects);
@@ -55,54 +50,61 @@ const ListManager = ({
   }
 
   return (
-    <Container>
-      <TopMenu className='topmenu'>
-        <h2>Esto es Sample Unit</h2>
-        <input onChange={handleSearchByText} className="top-menu__search" placeholder="Search..." />
-        <ul>
-          <li>
-            <Link className="top-menu__button" to={`/${parent}/create`}><MdCreateNewFolder /></Link>
-          </li>
-          <li style={{ position: 'relative' }}>
-            <Link className="top-menu__button" to={`/${parent}`} onClick={handleDropdown}><AiFillFilter /></Link>
-            {showFilterDropdown &&
-              <Dropdown>
-                <a href="#">
-                  Order By Date
-                </a>
-                <a href="#">
-                  Order By Owner
-                </a>
-              </Dropdown>
-            }
-          </li>
-          <li>
-            <Link onClick={() => setCardStyle(!cardStyle)} to="#" className="top-menu__button">
-              <HiViewGrid />/<HiViewList />
-            </Link>
-          </li>
-        </ul>
-      </TopMenu>
-      <ProjectsList>
-        <div className={cardStyle === true ? 'card-list' : 'list-list'}>
-          {filteredProjects &&
-            filteredProjects.map((project: any) => (
-              <ProjectItem className="item" key={project.workflowId}>
-                {project.title && <p className='project__title'>{project.title}</p>}
-                {project.description && <p className='project__description'>{project.description}</p>}
-                {project.ownerId && <p className='project__owner'>{project.ownerId}</p>}
-                {project.startDate && <p className='project__startdate'>{project.startDate}</p>}
-                {project.endedAt && <p className='project__enddate'>{project.endDate}</p>}
-                <p className='project__type'>{project.projectType}</p>
-                <button className='project__button'>Editar</button>
-              </ProjectItem>
-            ))}
-        </div>
-      </ProjectsList>
-    </Container>
-  )
+    <Body>
+      <Header />
+      <Wrapper>
+        <SideMenu />
+        <Container>
+          <TopMenu className='topmenu'>
+            <h2>Esto es Projects</h2>
+            <input onChange={handleSearchByText} className="top-menu__search" placeholder="Search..." />
+            <ul>
+              <li>
+                <Link className="top-menu__button" to="/projects/create"><MdCreateNewFolder /></Link>
+              </li>
+              <li style={{ position: 'relative' }}>
+                <Link className="top-menu__button" to="/projects" onClick={handleDropdown}><AiFillFilter /></Link>
+                {showFilterDropdown &&
+                  <Dropdown>
+                    <a href="#">
+                      Order By Date
+                    </a>
+                    <a href="#">
+                      Order By Owner
+                    </a>
+                  </Dropdown>
+                }
+              </li>
+              <li>
+                <Link onClick={() => setCardStyle(!cardStyle)} to="#" className="top-menu__button">
+                  <HiViewGrid />/<HiViewList />
+                </Link>
+              </li>
+            </ul>
+          </TopMenu>
+          <ProjectsList>
+            <div className={cardStyle === true ? 'card-list' : 'list-list'}>
+              {projects &&
+                filteredProjects.map((project: any) => (
+                  <ProjectItem className="item" key={project.workflowId}>
+                    <p className='project__title'>{project.title}</p>
+                    <p className='project__description'>{project.description}</p>
+                    <p className='project__owner'>{project.ownedId}</p>
+                    <p className='project__date'>{project.startDate}</p>
+                    {project.endedAt && <p className='project__date'>{project.endDate}</p>}
+                    <p className='project__type'>{project.projectType}</p>
+                    <button className='project__button'>Editar</button>
+                  </ProjectItem>
+                ))}
+            </div>
+          </ProjectsList>
+        </Container>
+      </Wrapper>
+      <Footer />
+    </Body>
+  );
 }
-export default ListManager
+export default Projects
 
 const TopMenu = Styled.div`
   display: flex;
@@ -221,4 +223,14 @@ const ProjectItem = Styled.div`
       transition: all 0.2s ease-in-out;
     }
   }
+`
+
+const ProjectLister = Styled.div`
+  width: 100%;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  text-align: left;
+  border-radius: 5px;
 `
