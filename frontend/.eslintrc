@@ -11,7 +11,6 @@
     "plugin:react-hooks/recommended",
     "plugin:react/jsx-runtime",
     "plugin:@typescript-eslint/recommended",
-    "plugin:import/errors",
     "plugin:jsx-a11y/recommended",
     "prettier"
   ],
@@ -25,14 +24,12 @@
   },
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "typescript/rule-name": "error",
     "react/require-default-props": ["off"],
     "react/react-in-jsx-scope": ["off"],
     "react/forbid-prop-types": ["off"],
     "react/jsx-props-no-spreading": ["off"],
-    "no-param-reassign": ["error", { "props": false }],
-    "prettier/prettier": ["error", { "endOfLine": "auto" }],
-    "no-warning-comments": [0, { "terms": ["todo", "fixme", "any other term"], "location": "anywhere" }]
+    "react/jsx-filename-extension": ["error", { "extensions": [".tsx"] }],
+    "no-param-reassign": ["error", { "props": false }]
   },
   "settings": {
     "react": {
