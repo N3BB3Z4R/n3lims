@@ -91,10 +91,10 @@ const ListSamples = ({
             <Link className="top-menu__button" to={`/${parent}`} onClick={handleDropdown}><AiFillFilter /></Link>
             {showFilterDropdown &&
               <Dropdown>
-                <a href="#">
+                <a href="/">
                   Order By Date
                 </a>
-                <a href="#">
+                <a href="/">
                   Order By Owner
                 </a>
               </Dropdown>
@@ -149,7 +149,7 @@ const ListSamples = ({
               </div>
               <div>
                 {filteredSamples.map((sample: SampleProps) => (
-                  <SampleItem>
+                  <SampleItem key={sample.SampleID}>
                     {sample?.SampleID && <p>{sample?.SampleID}</p>}
                     {sample?.ParticipantID && <p>{sample?.ParticipantID}</p>}
                     {sample?.Type && <p>{sample?.Type}</p>}
