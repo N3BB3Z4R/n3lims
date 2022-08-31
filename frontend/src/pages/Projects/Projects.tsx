@@ -7,22 +7,16 @@ import { HiViewGrid, HiViewList } from 'react-icons/hi';
 import { MdCreateNewFolder } from 'react-icons/md';
 import { AiFillFilter } from 'react-icons/ai';
 import Dropdown from '../../components/atoms/Dropdown';
+import { ProjectsProps } from '../../types/SamplesType';
 
-type ProjectsProps = {
-  id: number;
-  title: string;
-  description: string;
-  ownedId: number;
-  createdAt: string;
-  endedAt: string;
-}
 function Projects() {
 
   const [cardStyle, setCardStyle] = useState(true);
   const [searchFilter, setSearchFilter] = useState('');
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-  const [filteredProjects, setFilteredProjects] = useState<Array<ProjectsProps>>([]);
-  const [projects, setProjects] = useState<Array<ProjectsProps>>([]);
+  const [filteredProjects, setFilteredProjects] = useState<ProjectsProps[]>([]);
+  const [projects, setProjects] = useState<ProjectsProps[]>([]);
+
   useEffect(() => {
     const getProjectsAsync = async () => {
       const projects = await API.getProjects();
@@ -30,13 +24,14 @@ function Projects() {
       setFilteredProjects(projects);
     }
     getProjectsAsync();
+    console.log('projects', projects);
   }, [])
 
   useEffect(() => {
     if (searchFilter === '') {
       setFilteredProjects(projects);
     } else {
-      const filteredProjects = projects.filter(project => project.title.toLowerCase().includes(searchFilter.toLowerCase()));
+      const filteredProjects = projects.filter((project) => project.title.toLowerCase().includes(searchFilter.toLowerCase()));
       setFilteredProjects(filteredProjects);
     }
   }, [searchFilter])
@@ -50,58 +45,53 @@ function Projects() {
   }
 
   return (
-    <Body>
-      <Header />
-      <Wrapper>
-        <SideMenu />
-        <Container>
-          <TopMenu className='topmenu'>
-            <h2>Esto es Projects</h2>
-            <input onChange={handleSearchByText} className="top-menu__search" placeholder="Search..." />
-            <ul>
-              <li>
-                <Link className="top-menu__button" to="/projects/create"><MdCreateNewFolder /></Link>
-              </li>
-              <li style={{ position: 'relative' }}>
-                <Link className="top-menu__button" to="/projects" onClick={handleDropdown}><AiFillFilter /></Link>
-                {showFilterDropdown &&
-                  <Dropdown>
-                    <a href="#">
-                      Order By Date
-                    </a>
-                    <a href="#">
-                      Order By Owner
-                    </a>
-                  </Dropdown>
-                }
-              </li>
-              <li>
-                <Link onClick={() => setCardStyle(!cardStyle)} to="#" className="top-menu__button">
-                  <HiViewGrid />/<HiViewList />
-                </Link>
-              </li>
-            </ul>
-          </TopMenu>
-          <ProjectsList>
-            <div className={cardStyle === true ? 'card-list' : 'list-list'}>
-              {projects &&
-                filteredProjects.map((project: any) => (
-                  <ProjectItem className="item" key={project.workflowId}>
-                    <p className='project__title'>{project.title}</p>
-                    <p className='project__description'>{project.description}</p>
-                    <p className='project__owner'>{project.ownedId}</p>
-                    <p className='project__date'>{project.startDate}</p>
-                    {project.endedAt && <p className='project__date'>{project.endDate}</p>}
-                    <p className='project__type'>{project.projectType}</p>
-                    <button className='project__button'>Editar</button>
-                  </ProjectItem>
-                ))}
-            </div>
-          </ProjectsList>
-        </Container>
-      </Wrapper>
-      <Footer />
-    </Body>
+    <Wrapper>
+      <Container>
+        <TopMenu className='topmenu'>
+          <h2>Esto es Projects</h2>
+          <input onChange={handleSearchByText} className="top-menu__search" placeholder="Search..." />
+          <ul>
+            <li>
+              <Link className="top-menu__button" to="/projects/create"><MdCreateNewFolder /></Link>
+            </li>
+            <li style={{ position: 'relative' }}>
+              <Link className="top-menu__button" to="/projects" onClick={handleDropdown}><AiFillFilter /></Link>
+              {showFilterDropdown &&
+                <Dropdown>
+                  <a href="/">
+                    Order By Date
+                  </a>
+                  <a href="/">
+                    Order By Owner
+                  </a>
+                </Dropdown>
+              }
+            </li>
+            <li>
+              <Link onClick={() => setCardStyle(!cardStyle)} to="#" className="top-menu__button">
+                <HiViewGrid />/<HiViewList />
+              </Link>
+            </li>
+          </ul>
+        </TopMenu>
+        <ProjectsList>
+          <div className={cardStyle === true ? 'card-list' : 'list-list'}>
+            {projects &&
+              filteredProjects.map((project: ProjectsProps) => (
+                <ProjectItem className="item" key={project.workflowId}>
+                  <p className='project__title'>{project.title}</p>
+                  <p className='project__description'>{project.description}</p>
+                  <p className='project__owner'>{project.ownedId}</p>
+                  <p className='project__date'>{project.createdAt}</p>
+                  {project.endedAt && <p className='project__date'>{project.endedAt}</p>}
+                  <p className='project__type'>{project.projectType}</p>
+                  <button className='project__button'>Editar</button>
+                </ProjectItem>
+              ))}
+          </div>
+        </ProjectsList>
+      </Container>
+    </Wrapper>
   );
 }
 export default Projects

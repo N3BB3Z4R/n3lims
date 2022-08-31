@@ -89,7 +89,7 @@ export default SideMenu;
 const SideMenuStyled = Styled.div`
   width: 1rem;
   background: #666;
-  position: relative;
+  position: fixed;
 
   ul {
     list-style: none;

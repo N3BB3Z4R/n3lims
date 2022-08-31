@@ -36,7 +36,7 @@ function Projects() {
     if (searchFilter === '') {
       setFilteredProjects(projects);
     } else {
-      const filteredProjects = projects.filter(project => project.title.toLowerCase().includes(searchFilter.toLowerCase()));
+      const filteredProjects = projects.filter((project: any) => project.title.toLowerCase().includes(searchFilter.toLowerCase()));
       setFilteredProjects(filteredProjects);
     }
   }, [searchFilter])

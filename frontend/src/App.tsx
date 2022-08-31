@@ -1,12 +1,10 @@
-import * as React from 'react';
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import './App.css';
 import GlobalStyle from './theme/globalstyle';
 import Home from './pages/Home/Home'
-import Projects from './pages/Projects/Projects'
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
-import SampleUnit from './pages/SampleUnit/SampleUnit';
+import { MainMenuDataEnum } from './types/SamplesType.d';
 // import Ad from './pages/Ad/Ad'
 // import CreateNewAd from './pages/CreateNewAd/CreateNewAd'
 // import Login from './pages/UserFlow/Login/Login'
@@ -21,16 +19,15 @@ import SampleUnit from './pages/SampleUnit/SampleUnit';
 // import UserAds from './pages/UserAds/UserAds'
 // import ProtectedRoute from './components/organisms/ProtectedRoute'
 
-
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home state={MainMenuDataEnum.Dashboard} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/sample-unit" element={<SampleUnit />} />
+        <Route path="/projects" element={<Home state={MainMenuDataEnum.Projects} />} />
+        <Route path="/sample-unit" element={<Home state={MainMenuDataEnum.SampleUnit} />} />
         {/* <Route exact path="/ad/:id" component={Ad} />
         <Route exact path="/new-ad" component={CreateNewAd} />
         <Route exact path="/login" component={Login} />
