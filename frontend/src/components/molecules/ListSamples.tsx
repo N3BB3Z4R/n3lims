@@ -5,24 +5,9 @@ import { Link } from 'react-router-dom';
 import { HiViewGrid, HiViewList } from 'react-icons/hi';
 import { MdCreateNewFolder } from 'react-icons/md';
 import { AiFillFilter } from 'react-icons/ai';
+// import API from '../../api/ApiServices';
+import { SampleProps } from '../../types/SamplesType';
 import Dropdown from '../atoms/Dropdown';
-
-type SampleProps = {
-  SampleID: number;
-  Type: string;
-  Temperature: number;
-  FreezerID: number;
-  OnLoan: boolean;
-  QRCode: string;
-  BoxID: number;
-  ShelvingID: number;
-  Description: string;
-  ParticipantID: number;
-  TakingDate: string;
-  BoxSlotID: number;
-  Amount: number;
-  ProjectID: number;
-}
 
 type ListManagerProps = {
   parent: string;
@@ -31,17 +16,17 @@ type ListManagerProps = {
 
 const ListSamples = ({
   parent,
-  samples,
+  samples
 }: ListManagerProps) => {
   const [cardStyle, setCardStyle] = useState(false);
   const [searchFilter, setSearchFilter] = useState('');
   const [fieldFilter, setFieldFilter] = useState('');
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-  const [filteredSamples, setFilteredSamples] = useState<Array<SampleProps>>();
+  const [filteredSamples, setFilteredSamples] = useState<Array<SampleProps>>([]);
 
   useEffect(() => {
     setFilteredSamples(samples);
-  }, [])
+  }, [samples])
 
   useEffect(() => {
     if (searchFilter === '') {
@@ -91,10 +76,10 @@ const ListSamples = ({
             <Link className="top-menu__button" to={`/${parent}`} onClick={handleDropdown}><AiFillFilter /></Link>
             {showFilterDropdown &&
               <Dropdown>
-                <a href="#">
+                <a href="/">
                   Order By Date
                 </a>
-                <a href="#">
+                <a href="/">
                   Order By Owner
                 </a>
               </Dropdown>
@@ -149,7 +134,7 @@ const ListSamples = ({
               </div>
               <div>
                 {filteredSamples.map((sample: SampleProps) => (
-                  <SampleItem>
+                  <SampleItem key={sample.SampleID}>
                     {sample?.SampleID && <p>{sample?.SampleID}</p>}
                     {sample?.ParticipantID && <p>{sample?.ParticipantID}</p>}
                     {sample?.Type && <p>{sample?.Type}</p>}
@@ -182,7 +167,6 @@ const TopMenu = Styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
   color: white;
   background-color: #666;
   gap: 1rem;
@@ -219,7 +203,6 @@ const TopMenu = Styled.div`
 
 const SamplesList = Styled.div`
   padding: 1rem;
-  margin-right: 1rem;
   border-radius: 1rem;
   background-color: #aaa;
 
@@ -280,7 +263,7 @@ const SamplesList = Styled.div`
       display: grid;
       margin: 0;
       padding: 0;
-      grid-template-columns: minmax(70px, 70px) 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr 3fr 1fr 1fr;
+      grid-template-columns: minmax(70px, 70px) 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 2fr 3fr 1fr 1fr 1fr;
       /* grid-template-columns: repeat(13, 1fr); */
       width: 100%;
       align-items: center;
@@ -309,7 +292,7 @@ const SampleItem = Styled.div`
   display: grid;
   margin: 0;
   padding: 0;
-  grid-template-columns: minmax(70px, 70px) 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 3fr 3fr 1fr 1fr;
+  grid-template-columns: minmax(70px, 70px) 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 2fr 3fr 1fr 1fr 1fr;
   border-radius: 5px;
   font-size: 0.7rem;
   color: white;

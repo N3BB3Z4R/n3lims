@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const Body = styled.div`
   height: 100%;
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 `
 export default Body;
