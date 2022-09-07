@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const freezer1 = await prisma.freezers.create({
+  const freezer1 = await prisma.freezers.upsert({
     where: { name: "Freezer 1" },
     update: {},
     create: {

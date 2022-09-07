@@ -18,7 +18,7 @@ model Samples {
   updatedAt      DateTime      @updatedAt
   type           SampleType
   quantity       String
-  temperature    BigInt
+  temperature    Int
   amount         Int
   FreezerId      Int
   ShelvingId     Int
