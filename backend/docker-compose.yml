@@ -1,0 +1,46 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - TZ=Europe/Madrid
+      - PGTZ=Europe/Madrid
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=LIMS
+    ports:
+      - "5433:5432"
+    networks: 
+      - oscar-network
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:5050"
+    links:
+      - "db:pgsql-server"
+    networks:
+      - oscar-network
+  
+  selenium:
+    image: "selenium/standalone-chrome-debug"
+    ports:
+      - "4444:4444"
+      - "5900:5900"
+    networks:
+      - oscar-network
+
+# volumes: 
+#   db_data:
+#     driver: local
+
+networks:
+  oscar-network:
+    driver: bridge
+    # driver: host

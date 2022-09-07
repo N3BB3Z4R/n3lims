@@ -1,0 +1,280 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Samples {
+  id             Int           @id @default(autoincrement())
+  ProjectId      Int
+  Projects       Projects?     @relation(fields: [ProjectId], references: [id])
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  type           SampleType
+  quantity       String
+  temperature    BigInt
+  amount         Int
+  FreezerId      Int
+  ShelvingId     Int
+  BoxId          Int
+  SlotId         Int
+  OnLoan         Boolean       @default(false)
+  LoanedTo       String?
+  LoanedAt       DateTime?
+  QRCode         String
+  Description    String
+  boxId          Int?
+  Box            Box?          @relation(fields: [boxId], references: [id])
+  Boxes          Boxes?        @relation(fields: [boxesId], references: [id])
+  boxesId        Int?
+  Participants   Participants? @relation(fields: [participantsId], references: [id])
+  participantsId Int?
+}
+
+enum SampleType {
+  DNA
+  RNA
+  Blood
+  Saliva
+  Protein
+  Cell
+  Tissue
+  Other
+}
+
+model Projects {
+  id            Int           @id @default(autoincrement())
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  type          String
+  name          String
+  Samples       Samples[]
+  Participant   Participants? @relation(fields: [participantId], references: [id])
+  participantId Int?
+}
+
+enum ProjectType {
+  Research
+  Clinical
+  Trial
+  Study
+  Other
+}
+
+model Freezers {
+  id        Int         @id @default(autoincrement())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  name      String
+  shelvings Shelvings[]
+  Boxes     Boxes[]
+  Box       Box[]
+}
+
+model Shelvings {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  name      String
+  location  String
+  FreezerId Int
+  Boxes     Boxes[]
+  Freezers  Freezers? @relation(fields: [FreezerId], references: [id])
+  freezerId Int?
+  Box       Box[]
+}
+
+model Boxes {
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  name       String
+  Samples    Samples[]
+  FreezerId  Int
+  ShelvingId Int
+  Freezers   Freezers?  @relation(fields: [FreezerId], references: [id])
+  Shelvings  Shelvings? @relation(fields: [ShelvingId], references: [id])
+}
+
+model Box {
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  name        String
+  Samples     Samples[]
+  Freezer     Freezers?  @relation(fields: [freezersId], references: [id])
+  freezersId  Int?
+  Shelvings   Shelvings? @relation(fields: [shelvingsId], references: [id])
+  shelvingsId Int?
+  Slots       Slots[]
+}
+
+model Participants {
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  name       String
+  surname    String
+  email      String
+  phone      String
+  address    String
+  city       String
+  state      String
+  postalCode String
+  country    String
+  Projects   Projects[]
+  Samples    Samples[]
+}
+
+enum Slots {
+  A1
+  A2
+  A3
+  A4
+  A5
+  A6
+  A7
+  A8
+  A9
+  A10
+  A11
+  A12
+  B1
+  B2
+  B3
+  B4
+  B5
+  B6
+  B7
+  B8
+  B9
+  B10
+  B11
+  B12
+  C1
+  C2
+  C3
+  C4
+  C5
+  C6
+  C7
+  C8
+  C9
+  C10
+  C11
+  C12
+  D1
+  D2
+  D3
+  D4
+  D5
+  D6
+  D7
+  D8
+  D9
+  D10
+  D11
+  D12
+  E1
+  E2
+  E3
+  E4
+  E5
+  E6
+  E7
+  E8
+  E9
+  E10
+  E11
+  E12
+  F1
+  F2
+  F3
+  F4
+  F5
+  F6
+  F7
+  F8
+  F9
+  F10
+  F11
+  F12
+  G1
+  G2
+  G3
+  G4
+  G5
+  G6
+  G7
+  G8
+  G9
+  G10
+  G11
+  G12
+  H1
+  H2
+  H3
+  H4
+  H5
+  H6
+  H7
+  H8
+  H9
+  H10
+  H11
+  H12
+  I1
+  I2
+  I3
+  I4
+  I5
+  I6
+  I7
+  I8
+  I9
+  I10
+  I11
+  I12
+  J1
+  J2
+  J3
+  J4
+  J5
+  J6
+  J7
+  J8
+  J9
+  J10
+  J11
+  J12
+  K1
+  K2
+  K3
+  K4
+  K5
+  K6
+  K7
+  K8
+  K9
+  K10
+  K11
+  K12
+  L1
+  L2
+  L3
+  L4
+  L5
+  L6
+  L7
+  L8
+  L9
+  L10
+  L11
+  L12
+}
