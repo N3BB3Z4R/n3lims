@@ -26,6 +26,29 @@ export interface ProjectsProps {
 }
 
 export type SampleProps = {
+  id: number
+  ProjectId: string
+  createdAt: number
+  updatedAt: number
+  type: string
+  quantity: string
+  temperature: number
+  amount: number
+  FreezerId: string
+  ShelvingId: number
+  BoxId: string
+  SlotId: number
+  OnLoan: boolean
+  LoanedTo: string
+  LoanedAt: string
+  QRCode: string
+  Description: string
+  boxesId: number
+  boxesId: number
+  participantsId: number
+}
+
+export type SamplePropsOld = {
   SampleID: number
   Type: string
   Temperature: number

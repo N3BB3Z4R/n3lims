@@ -21,7 +21,14 @@ const getProjects = async () => {
 }
 const getSamples = async () => {
   try {
-    const res = await fetch(`${apiUrl}/samples`)
+    const res = await fetch(`${apiUrl}/samples`, {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+    })
     const data = await res.json()
     return data
   } catch (error) {
