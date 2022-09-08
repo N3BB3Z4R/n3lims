@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "frontend": "cd ./frontend && npm run dev",
-    "backend": "cd ./backend && npm run dev",
-    "e2e": "cd ./e2e && npm run test",
+    "backend": "cd ./backend && npm run start",
+    "prisma": "cd ./backend && npx prisma migrate dev --name init && npx prisma generate && npx prisma studio",
+    "docker": "cd ./backend && npm run docker",
+    "docker down": "cd ./backend && npm run docker-stop",
+    "-backend-old": "cd ./backend && npx npm run dev",
+    "-e2e": "cd ./e2e && npm run test",
     "install-deps": "cd ./frontend && npm install && cd .. && cd ./backend && npm install"
   },
   "repository": {
