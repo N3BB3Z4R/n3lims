@@ -96,20 +96,20 @@ const ListSamples = ({
         <div className={cardStyle === true ? 'card-list' : 'list-list'}>
           {filteredSamples && cardStyle &&
             filteredSamples.map((sample: SampleProps) => (
-              <SampleItem className="item" key={sample.SampleID}>
+              <SampleItem className="item" key={sample.id}>
                 <div className="item__header">
                   <button className='sample__button'>Editar</button>
                 </div>
-                {sample.SampleID && <p className="sample__sample-id">Sample ID: {sample.SampleID}</p>}
-                {sample.ParticipantID && <p className='sample__owner sample__card-data'>Participant ID: {sample.ParticipantID}</p>}
-                {sample.Type && <p className='sample__title sample__card-data'>Type of Sample: {sample.Type}</p>}
-                {sample.Temperature && <p className='sample__description sample__card-data'>Temperature: {sample.Temperature}</p>}
-                {sample.Amount && <p className='sample__startdate sample__card-data'>Amount: {sample.Amount} ml</p>}
-                {sample.FreezerID && <p className='sample__owner sample__card-data'>Freezer Number: {sample.FreezerID}</p>}
-                {sample.ShelvingID && <p className='sample__enddate sample__card-data'>Shelving Number: {sample.ShelvingID}</p>}
-                {sample.BoxID && <p className='sample__startdate sample__card-data'>Box ID: {sample.BoxID}</p>}
-                {sample.BoxSlotID && <p className='sample__startdate sample__card-data'>Box Slot ID: {sample.BoxSlotID}</p>}
-                {sample.TakingDate && <p className='sample__enddate sample__card-data'>Taking Date: {sample.TakingDate}</p>}
+                {sample.id && <p className="sample__sample-id">Sample ID: {sample.id}</p>}
+                {sample.participantsId && <p className='sample__owner sample__card-data'>Participant ID: {sample.participantsId}</p>}
+                {sample.type && <p className='sample__title sample__card-data'>Type of Sample: {sample.type}</p>}
+                {sample.temperature && <p className='sample__description sample__card-data'>Temperature: {sample.temperature}</p>}
+                {sample.amount && <p className='sample__startdate sample__card-data'>Amount: {sample.amount} ml</p>}
+                {sample.FreezerId && <p className='sample__owner sample__card-data'>Freezer Number: {sample.FreezerId}</p>}
+                {sample.ShelvingId && <p className='sample__enddate sample__card-data'>Shelving Number: {sample.ShelvingId}</p>}
+                {sample.BoxId && <p className='sample__startdate sample__card-data'>Box ID: {sample.BoxId}</p>}
+                {sample.SlotId && <p className='sample__startdate sample__card-data'>Box Slot ID: {sample.SlotId}</p>}
+                {sample.createdAt && <p className='sample__enddate sample__card-data'>Taking Date: {sample.createdAt}</p>}
                 {sample.Description && <p className='sample__description sample__card-data'>Description: {sample.Description}</p>}
                 {<p className='sample__owner'>Actually on Loan: {sample.OnLoan.toString()}</p>}
               </SampleItem>)
@@ -134,20 +134,20 @@ const ListSamples = ({
               </div>
               <div>
                 {filteredSamples.map((sample: SampleProps) => (
-                  <SampleItem key={sample.SampleID}>
-                    {sample?.SampleID && <p>{sample?.SampleID}</p>}
-                    {sample?.ParticipantID && <p>{sample?.ParticipantID}</p>}
-                    {sample?.Type && <p>{sample?.Type}</p>}
-                    {sample?.Temperature && <p>{sample?.Temperature}º C</p>}
-                    {sample?.Amount && <p>{sample?.Amount} ml</p>}
-                    {sample?.FreezerID && <p>{sample?.FreezerID}</p>}
-                    {sample?.ShelvingID && <p>{sample?.ShelvingID}</p>}
-                    {sample?.BoxID && <p>{sample?.BoxID}</p>}
-                    {sample?.BoxSlotID && <p>{sample?.BoxSlotID}</p>}
-                    {sample?.TakingDate && <p>{sample?.TakingDate.slice(0, 10)}</p>}
+                  <SampleItem key={sample.id}>
+                    {sample?.id && <p>{sample?.id}</p>}
+                    {sample?.participantsId && <p>{sample?.participantsId}</p>}
+                    {sample?.type && <p>{sample?.type}</p>}
+                    {sample?.temperature && <p>{sample?.temperature}º C</p>}
+                    {sample?.amount && <p>{sample?.amount} ml</p>}
+                    {sample?.FreezerId && <p>{sample?.FreezerId}</p>}
+                    {sample?.ShelvingId && <p>{sample?.ShelvingId}</p>}
+                    {sample?.BoxId && <p>{sample?.BoxId}</p>}
+                    {sample?.SlotId && <p>{sample?.SlotId}</p>}
+                    {sample?.createdAt && <p>{sample?.createdAt}</p>}
                     {sample?.Description && <p>{sample?.Description.slice(0, 10)}</p>}
                     {<p>{sample?.OnLoan ? 'yes' : 'no'}</p>}
-                    {sample?.ProjectID && <p>{sample?.ProjectID}</p>}
+                    {sample?.id && <p>{sample?.id}</p>}
                     <p><button className='sample__button'>Editar</button></p>
                   </SampleItem>
                 )

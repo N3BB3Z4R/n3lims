@@ -1,0 +1,282 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Workflows {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  createdById Int
+  createdBy   Users     @relation(fields: [createdById], references: [id])
+  name        String
+  description String
+  steps       Steps[]
+  Projects    Projects?
+}
+
+model Projects {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  workflowId Int       @unique
+  Workflows  Workflows @relation(fields: [workflowId], references: [id])
+  type       String
+  name       String
+  Users      Users[]
+  Samples    Samples[]
+  Cohort     Cohort?   @relation(fields: [cohortId], references: [id])
+  cohortId   Int?
+}
+
+model Samples {
+  id            Int          @id @default(autoincrement())
+  projectId     Int
+  Projects      Projects?    @relation(fields: [projectId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  type          SampleType
+  quantity      String
+  temperature   Temperatures
+  amount        Int
+  Boxes         Boxes?       @relation(fields: [boxesId], references: [id])
+  boxesId       Int?
+  slotId        DataMatrix81
+  OnLoan        Boolean      @default(false)
+  LoanedTo      String?
+  LoanedAt      DateTime?
+  QRCode        String
+  Description   String
+  Notes         String?
+  Participants  Cohort?      @relation(fields: [participantId], references: [id])
+  participantId Int?
+}
+
+model Steps {
+  id          Int       @id @default(autoincrement())
+  workflowId  Int
+  Workflows   Workflows @relation(fields: [workflowId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  name        String
+  description String
+  order       Int
+}
+
+model Freezers {
+  id          Int              @id @default(autoincrement())
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  name        String
+  location    FreezerLocations
+  temperature Temperatures
+  Boxes       Boxes[]
+}
+
+model Boxes {
+  id        Int              @id @default(autoincrement())
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  name      String
+  Samples   Samples[]
+  Shelving  ShelvingPosition
+  FreezerId Int
+  Freezers  Freezers?        @relation(fields: [FreezerId], references: [id])
+}
+
+model Cohort {
+  id               Int                @id @default(autoincrement())
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  name             String
+  surname          String
+  email            String             @unique
+  phone            String
+  address          String
+  city             String
+  state            String
+  postalCode       String
+  country          String
+  Projects         Projects[]
+  Samples          Samples[]
+  InformedConsents InformedConsents[]
+  MedicalRecordId  Int                @unique
+  MedicalRecords   MedicalRecords?    @relation(fields: [MedicalRecordId], references: [id])
+}
+
+model InformedConsents {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  projectId     Int
+  participantId Int
+  participants  Cohort   @relation(fields: [participantId], references: [id])
+  consent       Boolean
+  consentDate   DateTime
+}
+
+model MedicalRecords {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  participantId Int      @unique
+  medicalRecord String
+  Cohort        Cohort[]
+}
+
+model Users {
+  id         Int         @id @default(autoincrement())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  email      String      @unique
+  password   String
+  name       String?
+  type       UserType
+  Projects   Projects?   @relation(fields: [projectsId], references: [id])
+  projectsId Int?
+  Workflows  Workflows[]
+}
+
+enum SampleType {
+  DNA
+  RNA
+  Blood
+  Marrow
+  Saliva
+  Protein
+  Cell
+  Tissue
+  Other
+}
+
+enum Temperatures {
+  Room
+  Cold
+  Frozen
+  UltraFrozen
+}
+
+enum ProjectType {
+  Research
+  Trial
+  Study
+  Other
+}
+
+enum FreezerLocations {
+  Basement
+  FirstFloor
+  SecondFloor
+  ThirdFloor
+  FourthFloor
+}
+
+enum ShelvingPosition {
+  First
+  Second
+  Third
+  Fourth
+  Fifth
+  Sixth
+}
+
+enum UserType {
+  Admin
+  Researcher
+  LabTechnician
+  Nurse
+  ExternalPartner
+  IT
+  Guest
+}
+
+enum DataMatrix81 {
+  A1
+  A2
+  A3
+  A4
+  A5
+  A6
+  A7
+  A8
+  A9
+  B1
+  B2
+  B3
+  B4
+  B5
+  B6
+  B7
+  B8
+  B9
+  C1
+  C2
+  C3
+  C4
+  C5
+  C6
+  C7
+  C8
+  C9
+  D1
+  D2
+  D3
+  D4
+  D5
+  D6
+  D7
+  D8
+  D9
+  E1
+  E2
+  E3
+  E4
+  E5
+  E6
+  E7
+  E8
+  E9
+  F1
+  F2
+  F3
+  F4
+  F5
+  F6
+  F7
+  F8
+  F9
+  G1
+  G2
+  G3
+  G4
+  G5
+  G6
+  G7
+  G8
+  G9
+  H1
+  H2
+  H3
+  H4
+  H5
+  H6
+  H7
+  H8
+  H9
+  I1
+  I2
+  I3
+  I4
+  I5
+  I6
+  I7
+  I8
+  I9
+}
