@@ -25,6 +25,7 @@
 // index.ts for prisma api client
 require("dotenv").config();
 const { PrismaClient } = require("@prisma/client");
+const Samples = require("./Samples.controller");
 // implement CORS
 const cors = require("cors");
 // const { express } = require("express");
@@ -38,6 +39,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (res) => {
+  // welcome message
   res.send({
     message: "Welcome to n3LIMS API",
     author: "Oscar Abad a.k.a. N3BB3Z4R",

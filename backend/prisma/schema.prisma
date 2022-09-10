@@ -10,37 +10,145 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Workflows {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  createdById Int
+  createdBy   Users     @relation(fields: [createdById], references: [id])
+  name        String
+  description String
+  steps       Steps[]
+  Projects    Projects?
+}
+
+model Projects {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  workflowId Int       @unique
+  Workflows  Workflows @relation(fields: [workflowId], references: [id])
+  type       String
+  name       String
+  Users      Users[]
+  Samples    Samples[]
+  Cohort     Cohort?   @relation(fields: [cohortId], references: [id])
+  cohortId   Int?
+}
+
 model Samples {
-  id             Int           @id @default(autoincrement())
-  ProjectId      Int
-  Projects       Projects?     @relation(fields: [ProjectId], references: [id])
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  type           SampleType
-  quantity       String
-  temperature    Int
-  amount         Int
-  FreezerId      Int
-  ShelvingId     Int
-  BoxId          Int
-  SlotId         Int
-  OnLoan         Boolean       @default(false)
-  LoanedTo       String?
-  LoanedAt       DateTime?
-  QRCode         String
-  Description    String
-  boxId          Int?
-  Box            Box?          @relation(fields: [boxId], references: [id])
-  Boxes          Boxes?        @relation(fields: [boxesId], references: [id])
-  boxesId        Int?
-  Participants   Participants? @relation(fields: [participantsId], references: [id])
-  participantsId Int?
+  id            Int          @id @default(autoincrement())
+  projectId     Int
+  Projects      Projects?    @relation(fields: [projectId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  type          SampleType
+  quantity      String
+  temperature   Temperatures
+  amount        Int
+  Boxes         Boxes?       @relation(fields: [boxesId], references: [id])
+  boxesId       Int?
+  slotId        DataMatrix81
+  OnLoan        Boolean      @default(false)
+  LoanedTo      String?
+  LoanedAt      DateTime?
+  QRCode        String
+  Description   String
+  Notes         String?
+  Participants  Cohort?      @relation(fields: [participantId], references: [id])
+  participantId Int?
+}
+
+model Steps {
+  id          Int       @id @default(autoincrement())
+  workflowId  Int
+  Workflows   Workflows @relation(fields: [workflowId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  name        String
+  description String
+  order       Int
+}
+
+model Freezers {
+  id          Int              @id @default(autoincrement())
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  name        String
+  location    FreezerLocations
+  temperature Temperatures
+  Boxes       Boxes[]
+}
+
+model Boxes {
+  id        Int              @id @default(autoincrement())
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  name      String
+  Samples   Samples[]
+  Shelving  ShelvingPosition
+  FreezerId Int
+  Freezers  Freezers?        @relation(fields: [FreezerId], references: [id])
+}
+
+model Cohort {
+  id               Int                @id @default(autoincrement())
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  name             String
+  surname          String
+  email            String             @unique
+  phone            String
+  address          String
+  city             String
+  state            String
+  postalCode       String
+  country          String
+  Projects         Projects[]
+  Samples          Samples[]
+  InformedConsents InformedConsents[]
+  MedicalRecordId  Int                @unique
+  MedicalRecords   MedicalRecords?    @relation(fields: [MedicalRecordId], references: [id])
+}
+
+model InformedConsents {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  projectId     Int
+  participantId Int
+  participants  Cohort   @relation(fields: [participantId], references: [id])
+  consent       Boolean
+  consentDate   DateTime
+}
+
+model MedicalRecords {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  participantId Int      @unique
+  medicalRecord String
+  Cohort        Cohort[]
+}
+
+model Users {
+  id         Int         @id @default(autoincrement())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  email      String      @unique
+  password   String
+  name       String?
+  type       UserType
+  Projects   Projects?   @relation(fields: [projectsId], references: [id])
+  projectsId Int?
+  Workflows  Workflows[]
 }
 
 enum SampleType {
   DNA
   RNA
   Blood
+  Marrow
   Saliva
   Protein
   Cell
@@ -48,91 +156,48 @@ enum SampleType {
   Other
 }
 
-model Projects {
-  id            Int           @id @default(autoincrement())
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  type          String
-  name          String
-  Samples       Samples[]
-  Participant   Participants? @relation(fields: [participantId], references: [id])
-  participantId Int?
+enum Temperatures {
+  Room
+  Cold
+  Frozen
+  UltraFrozen
 }
 
 enum ProjectType {
   Research
-  Clinical
   Trial
   Study
   Other
 }
 
-model Freezers {
-  id        Int         @id @default(autoincrement())
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  name      String
-  shelvings Shelvings[]
-  Boxes     Boxes[]
-  Box       Box[]
+enum FreezerLocations {
+  Basement
+  FirstFloor
+  SecondFloor
+  ThirdFloor
+  FourthFloor
 }
 
-model Shelvings {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  name      String
-  location  String
-  FreezerId Int
-  Boxes     Boxes[]
-  Freezers  Freezers? @relation(fields: [FreezerId], references: [id])
-  freezerId Int?
-  Box       Box[]
+enum ShelvingPosition {
+  First
+  Second
+  Third
+  Fourth
+  Fifth
+  Sixth
 }
 
-model Boxes {
-  id         Int        @id @default(autoincrement())
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  name       String
-  Samples    Samples[]
-  FreezerId  Int
-  ShelvingId Int
-  Freezers   Freezers?  @relation(fields: [FreezerId], references: [id])
-  Shelvings  Shelvings? @relation(fields: [ShelvingId], references: [id])
+enum UserType {
+  Admin
+  Researcher
+  LabTechnician
+  Nurse
+  ExternalPartner
+  IT
+  Guest
 }
 
-model Box {
-  id          Int        @id @default(autoincrement())
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  name        String
-  Samples     Samples[]
-  Freezer     Freezers?  @relation(fields: [freezersId], references: [id])
-  freezersId  Int?
-  Shelvings   Shelvings? @relation(fields: [shelvingsId], references: [id])
-  shelvingsId Int?
-  Slots       Slots[]
-}
-
-model Participants {
-  id         Int        @id @default(autoincrement())
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  name       String
-  surname    String
-  email      String
-  phone      String
-  address    String
-  city       String
-  state      String
-  postalCode String
-  country    String
-  Projects   Projects[]
-  Samples    Samples[]
-}
-
-enum Slots {
+enum DataMatrix81 {
   A1
   A2
   A3
@@ -142,9 +207,6 @@ enum Slots {
   A7
   A8
   A9
-  A10
-  A11
-  A12
   B1
   B2
   B3
@@ -154,9 +216,6 @@ enum Slots {
   B7
   B8
   B9
-  B10
-  B11
-  B12
   C1
   C2
   C3
@@ -166,9 +225,6 @@ enum Slots {
   C7
   C8
   C9
-  C10
-  C11
-  C12
   D1
   D2
   D3
@@ -178,9 +234,6 @@ enum Slots {
   D7
   D8
   D9
-  D10
-  D11
-  D12
   E1
   E2
   E3
@@ -190,9 +243,6 @@ enum Slots {
   E7
   E8
   E9
-  E10
-  E11
-  E12
   F1
   F2
   F3
@@ -202,9 +252,6 @@ enum Slots {
   F7
   F8
   F9
-  F10
-  F11
-  F12
   G1
   G2
   G3
@@ -214,9 +261,6 @@ enum Slots {
   G7
   G8
   G9
-  G10
-  G11
-  G12
   H1
   H2
   H3
@@ -226,9 +270,6 @@ enum Slots {
   H7
   H8
   H9
-  H10
-  H11
-  H12
   I1
   I2
   I3
@@ -238,43 +279,4 @@ enum Slots {
   I7
   I8
   I9
-  I10
-  I11
-  I12
-  J1
-  J2
-  J3
-  J4
-  J5
-  J6
-  J7
-  J8
-  J9
-  J10
-  J11
-  J12
-  K1
-  K2
-  K3
-  K4
-  K5
-  K6
-  K7
-  K8
-  K9
-  K10
-  K11
-  K12
-  L1
-  L2
-  L3
-  L4
-  L5
-  L6
-  L7
-  L8
-  L9
-  L10
-  L11
-  L12
 }

@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "build": "tsc && vite build",
